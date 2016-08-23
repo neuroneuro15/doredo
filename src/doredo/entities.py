@@ -18,7 +18,7 @@ class Entity(object):
         else:
             n_verts = int(len(self.verts) / 2)
             self._vertex_list = graphics.vertex_list(3, #int(n_verts),
-                                                     ('v2f', self.verts),
+                                                     ('v2f/dynamic', self.verts),
                                                      ('c3B', self.color * n_verts)
                                                      )
             return self._vertex_list
