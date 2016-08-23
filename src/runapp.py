@@ -12,7 +12,7 @@ triangle_verts = (-1., -1.,
                   0., 1.)
 
 player = Entity(triangle_verts)
-
+print(type(player.vertex_list))
 
 
 vert = """
