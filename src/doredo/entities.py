@@ -36,10 +36,7 @@ class Entity(object):
     @color.setter
     def color(self, values):
         n_verts = int(len(self.vertex_list.vertices) / 3)
-        if len(values) / 3 == n_verts:
-            self.vertex_list.colors[:] = values
-        else:
-            self.vertex_list.colors[:] = values * n_verts
+        self.vertex_list.colors[:] = values * n_verts
 
 
     @property
