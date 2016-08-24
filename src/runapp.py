@@ -14,6 +14,8 @@ triangle_verts = utils.add_depth(triangle_verts)
 
 player = Entity(triangle_verts, color=(1., 0., .5))
 player.normals = np.array(player.vertices) * -1
+# player.obj.x = .7
+
 # new_verts = [np.sin(cumclock.cumtime) * v for v in triangle_verts]
 
 
@@ -26,10 +28,12 @@ layout(location = 3) in vec3 col;
 out vec3 col2;
 
 uniform float keyframe;
+uniform mat4 modelmat;
+
 void main(){
 
-    gl_Position.xyz = mix(vert0, vert1, keyframe);
-    gl_Position.w = 1.0;
+    vec4 vertex = vec4(mix(vert0, vert1, keyframe), 1.0);
+    gl_Position = modelmat * vertex;
 
     col2 = col;
 }
@@ -57,6 +61,7 @@ def on_draw():
 def update(dt):
     player.update(dt)
     player.keyframe = .5 * np.sin(cumclock.cumtime) + 0.5
+    player.obj.rot += np.pi * dt
 
 
 pyglet.clock.schedule(update)
