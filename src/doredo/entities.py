@@ -53,7 +53,8 @@ class Entity(object):
         return vertex_list
 
 
-    def draw(self, mode=gl.GL_TRIANGLES):
+    def draw(self, shader, mode=gl.GL_TRIANGLES):
+        shader.uniformf('keyframe', self.keyframe)
         self.vertex_list.draw(mode=mode)
 
     def update(self, dt):

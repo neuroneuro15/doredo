@@ -19,9 +19,13 @@ player.normals = np.array(player.vertices) * -1
 
 vert = """
 #version 330 core
-layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 0) in vec3 vert0;
+layout(location = 2) in vec3 vert1;
+
+uniform float keyframe;
 void main(){
-    gl_Position.xyz = vertexPosition_modelspace;
+
+    gl_Position.xyz = mix(vert0, vert1, keyframe);
     gl_Position.w = 1.0;
 }
 """
@@ -39,11 +43,13 @@ shader = Shader(vert=vert, frag=frag)
 @window.event
 def on_draw():
     window.clear()
-    with shader:
-        player.draw()
+    with shader as shad:
+        player.draw(shad)
+
 
 def update(dt):
     player.update(dt)
+    player.keyframe = .5 * np.sin(cumclock.cumtime) + 0.5
 
 
 pyglet.clock.schedule(update)
