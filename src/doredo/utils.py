@@ -1,4 +1,6 @@
 import pyglet
+import numpy as np
+
 
 class CumClock(pyglet.clock.Clock):
 
@@ -11,6 +13,11 @@ class CumClock(pyglet.clock.Clock):
         self.cumtime += to_return
         return to_return
 
+
+def add_depth(verts, depth=0.):
+    vv = np.array(verts, dtype=float).reshape(-1, 2)  # Make a n x 2 array of vertices
+    vv = np.hstack((vv, depth * np.ones((vv.shape[0], 1))))  # Add a third column of zeros: that's its depth.
+    return vv.ravel()
 
 cumclock = CumClock()
 pyglet.clock.schedule(cumclock.tick)

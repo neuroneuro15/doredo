@@ -6,58 +6,55 @@ import numpy as np
 
 class Entity(object):
 
-    dynamic = False
-
     def __init__(self, verts, x=0., y=0., color=(255, 255, 255)):
-
-
-        self._verts = self._process_vertlist_to_3d_array(verts)
+        self.vertex_list = self._build_vertex_list(verts)
 
         self.color = color
         self.x = x
         self.y = y
-        self._vertex_list = None
+        self.__keyframe = 0.
 
-    @property
-    def dynamic(self):
-        return False
-
-    @staticmethod
-    def _process_vertlist_to_3d_array(verts):
-        vv = np.array(verts, dtype=float).reshape(-1, 2)  # Make a n x 2 array of vertices
-        vv = np.hstack((vv, np.zeros((vv.shape[0], 1))))  # Add a third column of zeros: that's its depth.
-        return vv
 
     @property
     def vertices(self):
-        return self._verts
+        return self.vertex_list.vertices[:]
 
     @vertices.setter
     def vertices(self, verts):
-        self._verts = self._process_vertlist_to_3d_array(verts)
-        self.vertex_list.vertices[:] = self._verts.ravel()
-        self.vertex_list.normals[:] = self._verts.ravel()
-
+        self.vertex_list.vertices[:] = verts
 
     @property
-    def vertex_list(self):
-        if type(self._vertex_list) != type(None):
-            return self._vertex_list
-        else:
-            n_verts = self._verts.shape[0]
-            update_mode = 'dynamic' if self.dynamic else 'static'
+    def normals(self):
+        return self.vertex_list.normals[:]
 
-            self._vertex_list = graphics.vertex_list(n_verts,
-                                                     ('v3f/{}'.format(update_mode), self._verts.ravel()),
-                                                     ('c3B', self.color * n_verts),
-                                                     ('n3f/{}'.format(update_mode), self._verts.ravel()),
-                                                     )
-            return self._vertex_list
+    @normals.setter
+    def normals(self, verts):
+        self.vertex_list.normals[:] = verts
+
+    @property
+    def keyframe(self):
+        return self.__keyframe
+
+    @keyframe.setter
+    def keyframe(self, value):
+        assert 0. <= value <= 1.
+        self.__keyframe = value
+
+    def _build_vertex_list(self, verts):
+        vv = np.array(verts).ravel()
+        n_verts = int(vv.size / 3)
+        update_mode = 'dynamic'
+
+        vertex_list = graphics.vertex_list(n_verts,
+                                                 ('v3f/{}'.format(update_mode), vv),
+                                                 # ('c3B', self.color * n_verts),
+                                                 ('n3f/{}'.format(update_mode), vv),
+                                                 )
+        return vertex_list
 
 
     def draw(self, mode=gl.GL_TRIANGLES):
         self.vertex_list.draw(mode=mode)
-
 
     def update(self, dt):
         pass
