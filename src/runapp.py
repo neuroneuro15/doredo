@@ -1,16 +1,16 @@
 import pyglet
 import numpy as np
-from doredo import Shader, Entity, Window, cumclock, utils
+from doredo import Shader, Entity, Window, cumclock, utils, resources
+
 
 
 
 window = Window(bgColor=(.3, .7, .4, 1.), vsync=False)
 
-
 triangle_verts = (-1., -1.,
                   1., -1.,
                   0., 1.)
-triangle_verts = utils.add_depth(triangle_verts)
+triangle_verts = utils.add_depth(resources.triangle)
 
 player = Entity(triangle_verts, color=(1., 0., .5))
 player.normals = np.array(player.vertices) * -1

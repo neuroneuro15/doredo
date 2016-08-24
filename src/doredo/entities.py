@@ -48,7 +48,6 @@ class Entity(object):
         self.obj = Physical(x=x, y=y, rot=rot, scale=scale)
         self.__keyframe = 0.
 
-
     @property
     def vertices(self):
         return self.vertex_list.vertices[:]

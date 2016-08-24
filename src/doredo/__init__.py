@@ -1,6 +1,5 @@
 from .entities import Entity
 from .shader import Shader
 from .window import Window
-from . import utils
+from . import utils, resources
 from .utils import CumClock, cumclock
-
