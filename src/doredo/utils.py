@@ -11,3 +11,6 @@ class CumClock(pyglet.clock.Clock):
         self.cumtime += to_return
         return to_return
 
+
+cumclock = CumClock()
+pyglet.clock.schedule(cumclock.tick)
