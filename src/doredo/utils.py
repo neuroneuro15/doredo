@@ -14,6 +14,33 @@ class CumClock(pyglet.clock.Clock):
         self.cumtime += to_return
         return to_return
 
+class BarClock(CumClock):
+
+    def __init__(self, *args, bpm=180, beats=4, **kwargs):
+        super(BarClock, self).__init__(*args, **kwargs)
+        self._bps = bpm / 60.
+        self.beats = beats
+
+    @property
+    def bpm(self):
+        return self._bps * 60.
+
+    @bpm.setter
+    def bpm(self, value):
+        return self._bps * 60
+
+    @property
+    def measure_len(self):
+        return (1. / self._bps) * self.beats
+
+    def tick(self, *args, **kwargs):
+        """Return Percentage of Time through a measure."""
+        cumtime = super(BarClock, self).tick(*args, **kwargs)
+        mlen = self.measure_len
+        return (cumtime % mlen) / mlen
+
+
+
 
 def add_depth(verts, depth=0.):
     vv = np.array(verts, dtype=float).reshape(-1, 2)  # Make a n x 2 array of vertices
