@@ -16,7 +16,7 @@ class CumClock(pyglet.clock.Clock):
 
 class BarClock(CumClock):
 
-    def __init__(self, *args, bpm=180, beats=4, **kwargs):
+    def __init__(self, *args, bpm=120, beats=4, **kwargs):
         super(BarClock, self).__init__(*args, **kwargs)
         self._bps = bpm / 60.
         self.beats = beats
@@ -35,9 +35,33 @@ class BarClock(CumClock):
 
     def tick(self, *args, **kwargs):
         """Return Percentage of Time through a measure."""
-        cumtime = super(BarClock, self).tick(*args, **kwargs)
+        super(BarClock, self).tick(*args, **kwargs)
         mlen = self.measure_len
-        return (cumtime % mlen) / mlen
+        return (self.cumtime % mlen) / mlen
+
+
+class BeatClock(CumClock):
+
+    def __init__(self, *args, bpm=120, **kwargs):
+        super(BeatClock, self).__init__(*args, **kwargs)
+        self._bps = bpm / 60.
+
+    @property
+    def bpm(self):
+        return self._bps * 60.
+
+    @bpm.setter
+    def bpm(self, value):
+        return self._bps * 60
+
+    def tick(self, *args, **kwargs):
+        """Return Percentage of Time through a beat."""
+        super(BeatClock, self).tick(*args, **kwargs)
+        blen = 1. / self._bps
+        return (self.cumtime % blen) / blen
+
+
+
 
 
 

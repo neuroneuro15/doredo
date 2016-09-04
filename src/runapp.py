@@ -14,6 +14,7 @@ triangle_verts = utils.add_depth(resources.triangle)
 
 player = Entity(triangle_verts, color=(1., 0., .5))
 player.normals = np.array(player.vertices) * -1
+player.obj.scale = .2
 # player.obj.x = .7
 
 # new_verts = [np.sin(cumclock.cumtime) * v for v in triangle_verts]
@@ -60,7 +61,7 @@ def on_draw():
 
 def update(dt):
     player.update(dt)
-    player.keyframe = .5 * np.sin(cumclock.cumtime) + 0.5
+    # player.keyframe = .5 * np.sin(cumclock.cumtime) + 0.5
     player.obj.rot += np.pi * dt
 
 

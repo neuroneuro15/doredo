@@ -32,12 +32,23 @@ class Physical(object):
 
     def update(self):
         x, y, s, rot = self.x, self.y, self.scale, self.rot
-        mm = np.array([[s * np.cos(rot), -np.sin(rot), 0, x],
-                       [np.sin(rot),  s * np.cos(rot), 0, y],
-                       [              0,            0, s, 0],
-                       [              0,            0, 0, 1]
-                      ])
-        self.modelmat = mm
+        trans = np.array([[s, 0, 0, x],
+                          [0, s, 0, y],
+                          [0, 0, s, 0],
+                          [0, 0, 0, 1.]], dtype=float)
+
+        rot = np.array([[np.cos(rot), -np.sin(rot), 0, 0],
+                       [np.sin(rot), np.cos(rot), 0, 0],
+                       [0, 0, 1, 0],
+                       [0, 0, 0, 1]], dtype=float)
+
+        scale = np.array([[s, 0, 0, 0],
+                          [0, s, 0, 0],
+                          [0, 0, s, 0],
+                          [0, 0, 0, 1]], dtype=float)
+
+        # self.modelmat = np.dot(scale, np.dot(rot, trans))
+        self.modelmat = np.dot(trans, np.dot(rot, scale))
 
 
 
