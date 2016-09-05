@@ -29,7 +29,7 @@ class Physical(object):
 
     @property
     def scale(self):
-        return self.sx, self.xy
+        return self.sx
 
     @scale.setter
     def scale(self, *value):

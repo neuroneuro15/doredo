@@ -23,7 +23,7 @@ def get_ngon_vertices(sides):
     """Returns triangle strip order for any polygon"""
     assert sides > 2
     angles = np.linspace(0, 2 * np.pi, sides + 1)
-    verts = np.vstack(([0., 0.], [rotate2d(1, 0, theta=angle) for angle in angles]))
+    verts = np.vstack(([0., 0.], [rotate2d(1, 0, theta=angle + (angles[1] / 2)) for angle in angles]))
     # verts -= np.mean(verts, axis=0)
     return verts
 

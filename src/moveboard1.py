@@ -1,7 +1,5 @@
 import pyglet
 from pyglet.window import key
-import pyglet.gl as gl
-import numpy as np
 from doredo import Shader, Entity, Window, cumclock, utils, resources, Board, Player
 
 
@@ -19,7 +17,7 @@ def on_draw():
     window.clear()
     with shader:
         board.draw(shader)
-        player.draw(shader, mode=gl.GL_TRIANGLE_FAN)
+        player.draw(shader)
 
 
 def update(dt):
