@@ -1,7 +1,7 @@
 import pyglet
 import numpy as np
 from doredo import Shader, Entity, Window, cumclock, utils, resources
-
+import pyglet.gl as gl
 
 
 
@@ -12,9 +12,14 @@ triangle_verts = (-1., -1.,
                   0., 1.)
 triangle_verts = utils.add_depth(resources.triangle)
 
-player = Entity(triangle_verts, color=(1., 0., .5))
+pent_verts = resources.get_ngon_vertices(5)
+pent_verts = utils.add_depth(pent_verts)
+
+# player = Entity(triangle_verts, color=(1., 0., .5))
+player = Entity(pent_verts, color=(1., 0., .5))
 player.normals = np.array(player.vertices) * -1
-player.obj.scale = .2
+player.obj.scale = .8
+player.obj.sy = .3
 # player.obj.x = .7
 
 # new_verts = [np.sin(cumclock.cumtime) * v for v in triangle_verts]
@@ -56,13 +61,12 @@ shader = Shader(vert=vert, frag=frag)
 def on_draw():
     window.clear()
     with shader as shad:
-        player.draw(shad)
-
+        player.draw(shad, mode=gl.GL_TRIANGLE_FAN)
 
 def update(dt):
     player.update(dt)
     # player.keyframe = .5 * np.sin(cumclock.cumtime) + 0.5
-    player.obj.rot += np.pi * dt
+    # player.obj.rot += np.pi * dt
 
 
 pyglet.clock.schedule(update)

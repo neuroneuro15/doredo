@@ -6,22 +6,39 @@ import numpy as np
 
 class Physical(object):
 
-    __observables = ('x', 'y', 'rot', 'scale')
+    __observables = ('x', 'y', 'rot', 'sx', 'sy')
 
     def __init__(self, x=0., y=0., rot=0., scale=1.):
         self.__dict__['x'] = x
         self.__dict__['y'] = y
         self.__dict__['rot'] = rot
-        self.__dict__['scale'] = scale
+        self.__dict__['sx'] = scale
+        self.__dict__['sy'] = scale
+
 
         self.modelmat = None
         self.update()
+
+
 
     def __setattr__(self, key, value):
         super(Physical, self).__setattr__(key, value)
 
         if key in Physical.__observables:
             self.on_change()
+
+    @property
+    def scale(self):
+        return self.sx, self.xy
+
+    @scale.setter
+    def scale(self, *value):
+        if len(value) == 1:
+            self.sx = value[0]
+            self.sy = value[0]
+        else:
+            self.sx, self.sy = value
+
 
     def on_change(self):
         """
@@ -31,10 +48,10 @@ class Physical(object):
         self.update()
 
     def update(self):
-        x, y, s, rot = self.x, self.y, self.scale, self.rot
-        trans = np.array([[s, 0, 0, x],
-                          [0, s, 0, y],
-                          [0, 0, s, 0],
+        x, y, sx, sy, rot = self.x, self.y, self.sx, self.sy, self.rot
+        trans = np.array([[1., 0, 0, x],
+                          [0, 1., 0, y],
+                          [0, 0, 1., 0],
                           [0, 0, 0, 1.]], dtype=float)
 
         rot = np.array([[np.cos(rot), -np.sin(rot), 0, 0],
@@ -42,9 +59,9 @@ class Physical(object):
                        [0, 0, 1, 0],
                        [0, 0, 0, 1]], dtype=float)
 
-        scale = np.array([[s, 0, 0, 0],
-                          [0, s, 0, 0],
-                          [0, 0, s, 0],
+        scale = np.array([[sx, 0, 0, 0],
+                          [0, sy, 0, 0],
+                          [0, 0, 1., 0],
                           [0, 0, 0, 1]], dtype=float)
 
         # self.modelmat = np.dot(scale, np.dot(rot, trans))

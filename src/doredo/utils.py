@@ -76,5 +76,7 @@ def gen_primitive_entity(prim_type='triangle', x=0., y=0., rot=0., scale=1., dep
     verts = add_depth(verts, depth=depth)
     return Entity(verts=verts, x=x, y=y, rot=rot, scale=scale)
 
+
+
 cumclock = CumClock()
 pyglet.clock.schedule(cumclock.tick)
