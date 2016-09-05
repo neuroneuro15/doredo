@@ -56,3 +56,4 @@ def rect_factory(loc_str='--*', side='d', startdist=1.5, scale=.2):
 
     return rects
 
+

@@ -20,7 +20,7 @@ boxes = []
 speed = 1.2
 def box_launcher(dt):
     if not boxes:
-        rects = rect_factory()
+        rects = rect_factory('*--', 'l')
         boxes.extend(rects)
         print('creating box..')
 
